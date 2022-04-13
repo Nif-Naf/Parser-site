@@ -1,10 +1,10 @@
 from .models import External
 
-from django.forms import ModelForm, TextInput
+from django.forms import ModelForm, TextInput, URLInput
 
 class Parsing_form(ModelForm):
     """A form for searching in the table."""
-    
+
     class Meta: 
 
         model = External
@@ -13,7 +13,7 @@ class Parsing_form(ModelForm):
         field = ['url']
 
         widgets = {
-                "url": TextInput(attrs={
+                "url": URLInput(attrs={
                     'class': 'form-control',
                     'placeholder': 'Введите адрес',
                     'type': 'text'

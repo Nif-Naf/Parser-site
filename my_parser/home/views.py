@@ -31,7 +31,8 @@ class Parse(View):
             a = []
             get_adress = request.GET['url']
             
-            addr = requests.get('https://stopgame.ru/review/new/izumitelno/p2')
+            # addr = requests.get('https://stopgame.ru/review/new/izumitelno/p2')
+            addr = requests.get(get_adress)
             html = BS(addr.content, 'html.parser')
 
             for el in html.select(".items > .article-summary"):
