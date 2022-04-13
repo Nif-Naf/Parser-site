@@ -1,0 +1,56 @@
+#tab {
+    padding-top: 25px;
+}
+
+#question_one{
+    position: fixed;
+    bottom: 0px;
+    top: 20px;
+    left: 200px;
+}
+
+#question_one_result {
+    position: fixed;
+    bottom: 0px;
+    top: 37px;
+    left: 200px;
+}
+
+
+#question_two {
+    position: fixed;
+    bottom: 30px;
+    top: 0px;
+    left: 600px;
+}
+
+#question_two_result  {
+    position: fixed;
+    bottom: 0px;
+    top: 0px;
+    left: 600px;
+}
+
+#question_free {
+    position: fixed;
+    bottom: 51px;
+    left: 750px;
+}
+
+#question_free_result {
+    position: fixed;
+    bottom: 35px;
+    left: 750px;
+}
+
+#question_foor {
+    position: fixed;
+    bottom: 88px;
+    left: 900px;
+}
+
+#question_foor_result {
+    position: fixed;
+    bottom: 72px;
+    left: 900px;
+}
