@@ -2,10 +2,11 @@ from turtle import title
 from django.shortcuts import render
 from django.views.generic import View
 import requests
-from .forms import Parsing_form
+from .forms import Parsing_form, Js_form
 from bs4 import BeautifulSoup as BS
+import json
 
-from .models import Result
+from .models import Result, Messages
 
 def show(request):  #home_form
     """Просмотр главной страниц."""
@@ -24,6 +25,10 @@ def test(request):   #test
     """Просмотр страницы с результатом."""
     return render(request, 'home/test.html')
 
+def test_two(request):   #test
+    """Просмотр страницы с результатом."""
+    return render(request, 'home/test_two.html')
+
 class Parse(View):
     """ """
 
@@ -34,9 +39,7 @@ class Parse(View):
 
         if input_form.is_valid:
             """ """
-            a = []
-            b = []
-
+         
             # Получаем адрес страницы из запроса.
             get_adress = request.GET['url']
             
@@ -46,56 +49,74 @@ class Parse(View):
             #Создаем экземпляр класса
             html = BS(addr.content, 'html.parser')
 
-            # https://api.domainsdb.info/v1/domains/search?domain=
-            # https://api.domainsdb.info/v1/domains/search?domain=http://127.0.0.1:8000/test
-            # https://api.domainsdb.info/v1/domains/search?domain=https://nif-resume.xyz/
-
             # Находим все теги а на странице
             for link in html.find_all('a'):
-                a.append(link.get('href'))
-
-            # Выбираем какие на нужны поля
-            para = dict(
-                dom = 'domains',
-                dat = 'create_date'
-            )
-
-            
-            
-            # Получаем информацию о ссылке через апи.
-            for i in a:
-                adress_api = ('https://api.domainsdb.info/v1/domains/search?domain=' + i)
-                addr_api = requests.get(adress_api, para)
-                # b.append(addr_api.json())
                 
+                #Получаем ссылку в теге а
+                teg = link.get('href')
+                
+                #Формируем адресс для передачи в АПИ
+                adress_api = ('https://api.domainsdb.info/v1/domains/search?domain=' + teg)
 
-            # Result 
-            result = addr_api.json()
+                #Отправка ссылки в АПИ
+                addr_api = requests.get(adress_api) #<Response [200]> 
 
-            # Как созранить их в БД?
-            for i in result:
-
-                sdb = Result(
-                    url = '', 
-                    domains = 'domain',
-                    create_data = 'create_date',
-                    update_data = 'update_date',
-                    country = 'country',
-                    is_dead = 'is_Dead',
-                    a = 'A',
-                    ns = 'NS',
-                    cname = 'CNAME',
-                    mx = 'MX',
-                    txt = 'TXT'
-                )
-
-                sdb.save()
+                #Получаем информацию о ссылке через апи. В формате джейсон
+                result = addr_api.json() #Jsone файл
+              
+                funct = self.savedatabasejsone(result)
 
             output = {
-            # 'RES': addr_api
-            'Score': len(a),
-            'Href': a,
-            'API': addr_api.json()
+
+            'API': funct
         }
 
         return render(request, 'home/result.html', output)
+
+    def savedatabasejsone(self, result): 
+        """ Преобразовываем и добавляем в БД."""
+
+        res = result['domains']
+
+        for i in res:
+            newRecord = Result(
+                url = i['domain'], 
+                domains = i['domain'],
+                create_data = i['create_date'],
+                update_data = i['update_date'],
+                # country = i['country'],
+                is_dead = i['isDead'],
+                a = i['A'],
+                ns = i['NS'],
+                cname = i['CNAME'],
+                mx = i['MX'],
+                txt = i['TXT']
+                )
+            newRecord.save()
+
+        return True
+
+    # def savedatabasejsone(self, res): #Это блять работает!
+    #     """ Преобразовываем и добавляем в БД."""
+
+        #  res = [
+        #                 {
+        #                     "title": "Название",
+        #                     "text": "Текст",
+        #                     "contacts": "89257777777"
+        #                 },
+        
+        #             ]
+
+    #     parsedMessages = res
+
+    #     for parsedMessage in parsedMessages:
+    #             newRecord = Messages(
+    #                 title=parsedMessage['title'], 
+    #                 contacts=parsedMessage['contacts'], 
+    #                 text=parsedMessage['text']
+    #                 )
+    #             newRecord.save()
+
+    #     return True
+

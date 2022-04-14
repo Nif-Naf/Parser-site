@@ -10,13 +10,13 @@ class Result(models.Model):
     domains = models.CharField('Домен', max_length=300)
     create_data = models.CharField('Дата создания', max_length=200)
     update_data = models.CharField('Дата обновления', max_length=200)
-    country = models.CharField('Страна', max_length=200)
+    # country = models.CharField('Страна', max_length=200)
     is_dead = models.CharField('Хз что это', max_length=300)
-    a = models.CharField('', max_length=300)
-    ns = models.CharField('', max_length=300)
-    cname = models.CharField('', max_length=300)
-    mx = models.CharField('', max_length=300)
-    txt = models.CharField('', max_length=300)
+    a = models.CharField('awdda', max_length=300)
+    ns = models.CharField('awdwd', max_length=300)
+    cname = models.CharField('adwd', max_length=300)
+    mx = models.CharField('wadwa', max_length=300)
+    txt = models.CharField('wadwa', max_length=300)
 
 
     def __str__(self):
@@ -27,3 +27,13 @@ class Result(models.Model):
         """Для отображение в админке."""
         verbose_name = 'Данные парсинга'
         verbose_name_plural = 'Данные парсинга'
+
+class Messages(models.Model):
+    title = models.TextField(null=True, blank=True)
+    text = models.TextField(null=True, blank=True)
+    contacts = models.TextField(null=True, blank=True)
+ 
+ 
+ 
+    def __str__(self):
+        return self.title
