@@ -6,17 +6,17 @@ class External(models.Model):
 
 class Result(models.Model):
     """Модель """
-    url = models.CharField('Адрес', max_length=50)
-    domains = models.CharField('Домен', max_length=30)
-    create_data = models.DateTimeField('Дата создания', auto_now=True)
-    update_data = models.DateTimeField('Дата обновления', auto_now_add=True)
-    contry = models.CharField('Страна', max_length=20)
-    is_dead = models.CharField('Хз что это', max_length=30)
-    a = models.CharField('', max_length=30)
-    ns = models.CharField('', max_length=30)
-    cname = models.CharField('', max_length=30)
-    mx = models.CharField('', max_length=30)
-    txt = models.CharField('', max_length=30)
+    url = models.CharField('Адрес', max_length=500)
+    domains = models.CharField('Домен', max_length=300)
+    create_data = models.CharField('Дата создания', max_length=200)
+    update_data = models.CharField('Дата обновления', max_length=200)
+    country = models.CharField('Страна', max_length=200)
+    is_dead = models.CharField('Хз что это', max_length=300)
+    a = models.CharField('', max_length=300)
+    ns = models.CharField('', max_length=300)
+    cname = models.CharField('', max_length=300)
+    mx = models.CharField('', max_length=300)
+    txt = models.CharField('', max_length=300)
 
 
     def __str__(self):
