@@ -8,8 +8,8 @@ class Result(models.Model):
     """Модель """
     url = models.CharField('Адрес', max_length=100)
     domains = models.CharField('Домен', max_length=300)
-    create_data = models.CharField('Дата создания', max_length=50)
-    update_data = models.CharField('Дата обновления', max_length=50)
+    create_data = models.DateTimeField('Дата создания')
+    update_data = models.DateTimeField('Дата обновления')
     country = models.CharField('Страна', null=True, max_length=10)
     is_dead = models.CharField('Работает ли', null=True, max_length=300)
     a = models.CharField('Включена ли запись "А', null=True, max_length=300)
