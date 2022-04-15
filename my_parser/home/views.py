@@ -1,3 +1,4 @@
+from re import template
 from turtle import title
 from django.shortcuts import render, redirect
 from django.views.generic import View
@@ -5,6 +6,7 @@ import requests
 from .forms import Parsing_form, Js_form
 from bs4 import BeautifulSoup as BS
 import json
+from django.views.generic.list import ListView
 
 from .models import Result, Messages
 
@@ -17,12 +19,26 @@ def show(request):  #home_form
 
     return render(request, 'home/home.html', output)
 
-def show_result(request):   #table
-    """Просмотр страницы с результатом."""
+# def show_result(request):   #table
+#     """Просмотр страницы с результатом."""
 
-    object_in_db = Result.objects.all()
+#     object_in_db = Result.objects.all()
     
-    return render(request, 'home/result.html', context = {'result': object_in_db})
+#     return render(request, 'home/result.html', context = {'result': object_in_db})
+
+class Show_tablet(ListView):
+    """Класс отвечающий за вывод и форматирование таблицы."""
+
+    model = Result
+    template_name = 'home/result.html'
+    context_object_name = 'result'
+    paginate_by = 10
+
+    # def get (request):
+    #     """ """
+
+    #     object_in_db = Result.objects.all()
+    #     return render(request, 'home/result.html', context = {'result': object_in_db})
 
 class Parse(View):
     """ """
