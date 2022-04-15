@@ -9,6 +9,7 @@ import json
 from django.views.generic.list import ListView
 
 from .models import Result, Messages
+import datetime
 
 def show(request):  #home_form
     """Просмотр главной страниц."""
@@ -19,13 +20,6 @@ def show(request):  #home_form
 
     return render(request, 'home/home.html', output)
 
-# def show_result(request):   #table
-#     """Просмотр страницы с результатом."""
-
-#     object_in_db = Result.objects.all()
-    
-#     return render(request, 'home/result.html', context = {'result': object_in_db})
-
 class Show_tablet(ListView):
     """Класс отвечающий за вывод и форматирование таблицы."""
 
@@ -33,12 +27,6 @@ class Show_tablet(ListView):
     template_name = 'home/result.html'
     context_object_name = 'result'
     paginate_by = 10
-
-    # def get (request):
-    #     """ """
-
-    #     object_in_db = Result.objects.all()
-    #     return render(request, 'home/result.html', context = {'result': object_in_db})
 
 class Parse(View):
     """ """
@@ -74,7 +62,9 @@ class Parse(View):
 
                 #Получаем информацию о ссылке через апи. В формате джейсон
                 result = addr_api.json() #Jsone файл
-              
+
+                # date_time = self.date_time_jsone(result)
+
                 funct = self.savedatabasejsone(result, get_adress)
 
         return redirect('table')
@@ -83,8 +73,12 @@ class Parse(View):
         """ Преобразовываем и добавляем в БД."""
 
         res = result['domains']
-
+        
         for i in res:
+            convertait = self.convert_date(i)
+            i['create_date'] =  convertait[0]
+            i['update_date'] =  convertait[1]
+
             newRecord = Result(
                 url = get_adress, 
                 domains = i['domain'],
@@ -98,9 +92,21 @@ class Parse(View):
                 mx = i['MX'],
                 txt = i['TXT']
                 )
-            newRecord.save()
-
+        newRecord.save()
+        
         return "Все обьекты добавлены в базу данных успешно."
+
+    def convert_date(self, i):
+
+        b = i['create_date']
+        q = b.split('.')
+        w = datetime.datetime.strptime(q[0], "%Y-%m-%dT%H:%M:%S")
+
+        y = i['update_date']
+        l = y.split('.')
+        z = datetime.datetime.strptime(l[0], "%Y-%m-%dT%H:%M:%S")
+
+        return (w, z)
 
 def test(request):   #test
     """Просмотр страницы с результатом."""
