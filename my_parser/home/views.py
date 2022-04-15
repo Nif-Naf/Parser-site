@@ -84,7 +84,7 @@ class Parse(View):
                 domains = i['domain'],
                 create_data = i['create_date'],
                 update_data = i['update_date'],
-                # country = i['country'],
+                country = i['country'],
                 is_dead = i['isDead'],
                 a = i['A'],
                 ns = i['NS'],
