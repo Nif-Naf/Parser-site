@@ -28,6 +28,37 @@ class Show_tablet(ListView):
     context_object_name = 'result'
     paginate_by = 10
 
+class Sorting_by_url(Show_tablet):
+    """Сортируем по адресу."""
+
+    def get_ordering(self):
+        return self.request.GET.get('ordering', '-url')
+
+class Sorting_by_dead(Show_tablet):
+    """Сортируем по состоянию."""
+
+    def get_ordering(self):
+        return self.request.GET.get('ordering', '-is_dead')
+
+class Sorting_by_country(Show_tablet):
+    """Сортируем обькты по странам."""
+
+    def get_ordering(self):
+        return self.request.GET.get('ordering', '-country')
+    
+
+class Sorting_by_create_data(Show_tablet):
+    """Сортируем обьекты по дате создания."""
+
+    def get_ordering(self):
+        return self.request.GET.get('ordering', '-create_data')
+
+class Sorting_by_update_data(Show_tablet):
+    """Сортируем обьекты по дате обновления."""
+
+    def get_ordering(self):
+        return self.request.GET.get('ordering', '-update_data')
+
 class Parse(View):
     """ """
 

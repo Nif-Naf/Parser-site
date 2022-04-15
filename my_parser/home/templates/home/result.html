@@ -18,12 +18,12 @@
           <table class="table">
             <thead>
               <tr>
-                <th scope="col"><a href="#">URL</a></th>
+                <th scope="col"><a href="{% url 'search_url' %}">URL</a></th>
                 <th scope="col">Домен</th>
-                <th scope="col"><a href="#">Дата создания</a></th>
-                <th scope="col"><a href="#">Дата обновления</a></th>
-                <th scope="col"><a href="#">Страна</a></th>
-                <th scope="col"><a href="#">is Dead</a></th>
+                <th scope="col"><a href="{% url 'search_create_data' %}">Дата создания</a></th>
+                <th scope="col"><a href="{% url 'search_update_data' %}">Дата обновления</a></th>
+                <th scope="col"><a href="{% url 'search_country' %}">Страна</a></th>
+                <th scope="col"><a href="{% url 'search_dead' %}">is Dead</a></th>
                 <th scope="col">A</th>
                 <th scope="col">NS</th>
                 <th scope="col">CNAME</th>
