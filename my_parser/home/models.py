@@ -20,7 +20,7 @@ class Result(models.Model):
 
     def __str__(self):
         """Название."""
-        return self.url
+        return ('URL: {} Domen: {}'.format(self.url, self.domains))
 
     class Meta:
         """Для отображение в админке."""

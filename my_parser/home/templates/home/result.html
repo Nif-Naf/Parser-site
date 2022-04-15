@@ -13,10 +13,6 @@
 </head>
 <body>
 
-    <h1>Link:</h1>{{ Href }}
-    <h1>Len link:</h1>{{ Score }}
-    <h1>API:</h1> {{ API }}
-
     <section id="tab">
         <div class="container-lg">
           <table class="table">
@@ -39,10 +35,17 @@
               
               {% for i in result %}
               <tr>
-                <th scope="row">{{i.name_db}}</th>
-                <td>{{i.professional_db}}</td>
-                <td>{{i.sex_db}}</td>
-                <td>{{i.it_db}}</td>
+                <th scope="row">{{i.url}}</th>
+                <td>{{i.domains}}</td>
+                <td>{{i.create_data}}</td>
+                <td>{{i.update_data}}</td>
+                <td>{{i.country}}</td>
+                <td>{{i.is_dead}}</td>
+                <td>{{i.a}}</td>
+                <td>{{i.ns}}</td>
+                <td>{{i.cname}}</td>
+                <td>{{i.mx}}</td>
+                <td>{{i.txt}}</td>
               </tr>
               {% endfor %}
 

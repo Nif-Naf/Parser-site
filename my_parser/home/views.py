@@ -1,5 +1,5 @@
 from turtle import title
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import View
 import requests
 from .forms import Parsing_form, Js_form
@@ -19,15 +19,10 @@ def show(request):  #home_form
 
 def show_result(request):   #table
     """Просмотр страницы с результатом."""
-    return render(request, 'home/result.html')
 
-def test(request):   #test
-    """Просмотр страницы с результатом."""
-    return render(request, 'home/test.html')
-
-def test_two(request):   #test
-    """Просмотр страницы с результатом."""
-    return render(request, 'home/test_two.html')
+    object_in_db = Result.objects.all()
+    
+    return render(request, 'home/result.html', context = {'result': object_in_db})
 
 class Parse(View):
     """ """
@@ -64,23 +59,18 @@ class Parse(View):
                 #Получаем информацию о ссылке через апи. В формате джейсон
                 result = addr_api.json() #Jsone файл
               
-                funct = self.savedatabasejsone(result)
+                funct = self.savedatabasejsone(result, get_adress)
 
-            output = {
+        return redirect('table')
 
-            'API': funct
-        }
-
-        return render(request, 'home/result.html', output)
-
-    def savedatabasejsone(self, result): 
+    def savedatabasejsone(self, result, get_adress): 
         """ Преобразовываем и добавляем в БД."""
 
         res = result['domains']
 
         for i in res:
             newRecord = Result(
-                url = i['domain'], 
+                url = get_adress, 
                 domains = i['domain'],
                 create_data = i['create_date'],
                 update_data = i['update_date'],
@@ -94,29 +84,12 @@ class Parse(View):
                 )
             newRecord.save()
 
-        return True
+        return "Все обьекты добавлены в базу данных успешно."
 
-    # def savedatabasejsone(self, res): #Это блять работает!
-    #     """ Преобразовываем и добавляем в БД."""
+def test(request):   #test
+    """Просмотр страницы с результатом."""
+    return render(request, 'home/test.html')
 
-        #  res = [
-        #                 {
-        #                     "title": "Название",
-        #                     "text": "Текст",
-        #                     "contacts": "89257777777"
-        #                 },
-        
-        #             ]
-
-    #     parsedMessages = res
-
-    #     for parsedMessage in parsedMessages:
-    #             newRecord = Messages(
-    #                 title=parsedMessage['title'], 
-    #                 contacts=parsedMessage['contacts'], 
-    #                 text=parsedMessage['text']
-    #                 )
-    #             newRecord.save()
-
-    #     return True
-
+def test_two(request):   #test
+    """Просмотр страницы с результатом."""
+    return render(request, 'home/test_two.html')
