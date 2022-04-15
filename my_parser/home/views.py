@@ -63,13 +63,12 @@ class Parse(View):
                 #Получаем информацию о ссылке через апи. В формате джейсон
                 result = addr_api.json() #Jsone файл
 
-                # date_time = self.date_time_jsone(result)
-
-                funct = self.savedatabasejsone(result, get_adress)
+                funct = self.savedatabasejsone(result, teg)
+                
 
         return redirect('table')
 
-    def savedatabasejsone(self, result, get_adress): 
+    def savedatabasejsone(self, result, teg): 
         """ Преобразовываем и добавляем в БД."""
 
         res = result['domains']
@@ -80,7 +79,7 @@ class Parse(View):
             i['update_date'] =  convertait[1]
 
             newRecord = Result(
-                url = get_adress, 
+                url = teg, 
                 domains = i['domain'],
                 create_data = i['create_date'],
                 update_data = i['update_date'],
