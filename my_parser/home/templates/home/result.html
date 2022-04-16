@@ -7,50 +7,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'home/CSS/home_style.css' %}">
+    <link rel="stylesheet" href="{% static 'home/CSS/table_style.css' %}">
 
     <title>Таблица с результатами</title>
 </head>
 <body>
+      <section class="header">
 
-    <section id="tab">
-        <div class="container-lg">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col"><a href="{% url 'search_url' %}">URL</a></th>
-                <th scope="col">Домен</th>
-                <th scope="col"><a href="{% url 'search_create_data' %}">Дата создания</a></th>
-                <th scope="col"><a href="{% url 'search_update_data' %}">Дата обновления</a></th>
-                <th scope="col"><a href="{% url 'search_country' %}">Страна</a></th>
-                <th scope="col"><a href="{% url 'search_dead' %}">is Dead</a></th>
-                <th scope="col">A</th>
-                <th scope="col">NS</th>
-                <th scope="col">CNAME</th>
-                <th scope="col">MX</th>
-                <th scope="col">TXT</th>
-              </tr>
-            </thead>
-            <tbody>
-              
+        <div class="home">
+          <a href="{% url 'home_form' %}">На главную</a>
+        </div>
+
+        <div class="search">
+          <form action="#">
+            <input type="text">
+            <button>Фильтровать</button>
+          </form>
+        </div>
+      </section>
+    
+
+      <section class="main">
+        <div class="wrapper">
+            <div class="titel_table">
+              <div class="url base_titel"><a href="{% url 'search_url' %}">URL</a></div>
+              <div class="domen base_titel">Домен</div>
+              <div class="create base_titel"><a href="{% url 'search_create_data' %}">Дата создания</a></div>
+              <div class="update base_titel"><a href="{% url 'search_update_data' %}">Дата обновления</a></div>
+              <div class="country base_titel"><a href="{% url 'search_country' %}">Страна</a></div>
+              <div class="dead base_titel"><a href="{% url 'search_dead' %}">is Dead</a></div>
+              <div class="A base_titel">A</div>
+              <div class="NS base_titel">NS</div>
+              <div class="CNAME base_titel">CNAME</div>
+              <div class="MX base_titel">MX</div>
+              <div class="TXT base_titel">TXT</div>
+            </div>
+            <div class="find_object">
               {% for i in result %}
-              <tr>
-                <th scope="row">{{i.url}}</th>
-                <td>{{i.domains}}</td>
-                <td>{{i.create_data}}</td>
-                <td>{{i.update_data}}</td>
-                <td>{{i.country}}</td>
-                <td>{{i.is_dead}}</td>
-                <td>{{i.a}}</td>
-                <td>{{i.ns}}</td>
-                <td>{{i.cname}}</td>
-                <td>{{i.mx}}</td>
-                <td>{{i.txt}}</td>
-              </tr>
+                <div scope="row">{{i.url}}</div>
+                <div class="base_obj">{{i.domains}}</div>
+                <div class="base_obj">{{i.create_data}}</div>
+                <div class="base_obj">{{i.update_data}}</div>
+                <div class="base_obj">{{i.country}}</div>
+                <div class="base_obj" >{{i.is_dead}}</div>
+                <div class="base_obj">{{i.a}}</div>
+                <div class="base_obj">{{i.ns}}</div>
+                <div class="base_obj">{{i.cname}}</div>
+                <div class="base_obj">{{i.mx}}</div>
+                <div class="base_obj">{{i.txt}}</div>
               {% endfor %}
-
-            </tbody>
-          </table>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -64,11 +71,5 @@
         </ul>
       </nav>
 
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-      
   </body>
-</html>
-
-
-</body>
 </html>
