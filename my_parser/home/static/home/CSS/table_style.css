@@ -69,15 +69,18 @@ body {
 .list_pages {
     margin-top: 1em;
     padding-left: 2em;
+    margin-bottom: 2em;
 }
 
 .list_pages > ul {
     list-style-type: none;
     margin: 0;
+    white-space: nowrap;
 }
 
 .list_pages > ul > .page_number {
     padding-left: .3em;
+    display: inline-block; 
 }
 
 .list_pages > ul > .page_number > a {

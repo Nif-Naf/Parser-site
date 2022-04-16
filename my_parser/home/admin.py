@@ -1,8 +1,6 @@
 from email.message import Message
 from django.contrib import admin
 
-from .models import External, Result, Messages
+from .models import Result
 
-admin.site.register(External)
 admin.site.register(Result)
-admin.site.register(Messages)

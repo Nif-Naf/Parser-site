@@ -122,7 +122,7 @@ class Parse(View):
                 mx = i['MX'],
                 txt = i['TXT']
                 )
-        newRecord.save()
+            newRecord.save()
         
         return "Все обьекты добавлены в базу данных успешно."
 
