@@ -1,4 +1,5 @@
-from .models import External, Result
+
+from .models import External, Result, Search
 
 from django.forms import ModelForm, TextInput, URLInput
 
@@ -16,8 +17,26 @@ class Parsing_form(ModelForm):
                 "url": URLInput(attrs={
                     'class': 'form-control',
                     'placeholder': 'Введите адрес',
-                    'type': 'text'
+                    'type': 'link'
                 }),
+        }
+
+class Search_form(ModelForm):
+    """ """
+
+    class Meta:
+
+        model = Search
+
+        exclude = ()
+        field = ['search']
+
+        widgets = {
+                "search": TextInput(attrs={
+                    'class': 'form-search',
+                    'placeholder': 'Что хотим найти?',
+                    'type': 'text'
+                })
         }
 
 class Js_form(ModelForm):

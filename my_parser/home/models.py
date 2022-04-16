@@ -4,6 +4,10 @@ class External(models.Model):
     """Для использования передачи адреса."""
     url = models.CharField('Адрес', max_length=100)
 
+class Search(models.Model):
+    """ """
+    search_object = models.CharField('Поиск запрошенного в БД:', max_length=100)
+
 class Result(models.Model):
     """Модель """
     url = models.CharField('Адрес', max_length=100)
@@ -26,11 +30,3 @@ class Result(models.Model):
         """Для отображение в админке."""
         verbose_name = 'Данные парсинга'
         verbose_name_plural = 'Данные парсинга'
-
-class Messages(models.Model):
-    title = models.TextField(null=True, blank=True)
-    text = models.TextField(null=True, blank=True)
-    contacts = models.TextField(null=True, blank=True)
- 
-    def __str__(self):
-        return self.title

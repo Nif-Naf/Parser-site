@@ -3,12 +3,12 @@ from turtle import title
 from django.shortcuts import render, redirect
 from django.views.generic import View
 import requests
-from .forms import Parsing_form, Js_form
+from .forms import Parsing_form, Js_form, Search_form
 from bs4 import BeautifulSoup as BS
 import json
 from django.views.generic.list import ListView
 
-from .models import Result, Messages
+from .models import Result, Search
 import datetime
 
 def show(request):  #home_form
@@ -28,6 +28,34 @@ class Show_tablet(ListView):
     context_object_name = 'result'
     paginate_by = 10
 
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        context['search'] = Search_form()
+        return context
+
+class Show_sorting_table_for_request(Show_tablet):
+    """ """
+
+    # def get(self, request):
+
+    #     input_form = Parsing_form(request.GET)
+
+    #     if input_form.is_valid:
+    #         """ """
+         
+    #         get_adress = request.GET['search_object']
+
+    #         self.get_queryset(get_adress)
+
+    def get_queryset(self):
+        """ """
+        if self.request.GET.get("search_object"):
+            selection = self.request.GET.get("search_object")
+
+            qr = Result.objects.filter(url__icontains = selection)
+            return qr
+
 class Sorting_by_url(Show_tablet):
     """Сортируем по адресу."""
 
@@ -46,7 +74,6 @@ class Sorting_by_country(Show_tablet):
     def get_ordering(self):
         return self.request.GET.get('ordering', '-country')
     
-
 class Sorting_by_create_data(Show_tablet):
     """Сортируем обьекты по дате создания."""
 
