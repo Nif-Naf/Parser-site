@@ -62,9 +62,10 @@
 
       <nav class="list_pages">
         <ul>
-          {% for p in paginator.page_range %}
+          {% for page_now in paginator.page_range %}
           <li class="page_number">
-            <a href="?page={{ p }}">{{ p }},</a>
+
+            <a href="{% url 'table' %}?page={{ page_now }}">{{ page_now }},</a>
           </li>
           {% endfor %}
         </ul>

@@ -7,54 +7,44 @@ from .forms import Parsing_form, Js_form, Search_form
 from bs4 import BeautifulSoup as BS
 import json
 from django.views.generic.list import ListView
+from django.core.paginator import Paginator
 
 from .models import Result, Search
 import datetime
 
-def show(request):  #home_form
+def show(request):  
     """Просмотр главной страниц."""
 
     output = {
-        'form': Parsing_form
+        'form': Parsing_form,
     }
 
     return render(request, 'home/home.html', output)
 
 class Show_tablet(ListView):
     """Класс отвечающий за вывод и форматирование таблицы."""
-
     model = Result
     template_name = 'home/result.html'
     context_object_name = 'result'
-    paginate_by = 10
+    paginate_by = 1
 
     def get_context_data(self, **kwargs):
-
+        """Добавляем форму поиска для страницы."""
         context = super().get_context_data(**kwargs)
         context['search'] = Search_form()
         return context
 
 class Show_sorting_table_for_request(Show_tablet):
-    """ """
-
-    # def get(self, request):
-
-    #     input_form = Parsing_form(request.GET)
-
-    #     if input_form.is_valid:
-    #         """ """
-         
-    #         get_adress = request.GET['search_object']
-
-    #         self.get_queryset(get_adress)
+    """"Класс для вывода обьектов по поисковому запросу."""
 
     def get_queryset(self):
-        """ """
-        if self.request.GET.get("search_object"):
-            selection = self.request.GET.get("search_object")
+        """Данная функция 'отбирает' нужные обьекты в соответствии с поисковым запросом."""
 
-            qr = Result.objects.filter(url__icontains = selection)
-            return qr
+        if self.request.GET.get("search_object"):
+            """ """
+            selection = self.request.GET.get("search_object")
+            query = Result.objects.filter(url__icontains = selection)
+            return query
 
 class Sorting_by_url(Show_tablet):
     """Сортируем по адресу."""
@@ -87,15 +77,15 @@ class Sorting_by_update_data(Show_tablet):
         return self.request.GET.get('ordering', '-update_data')
 
 class Parse(View):
-    """ """
+    """Парсер."""
 
     def get(self, request):
-        """ """
+        """Если приходит в класс запрос Get"""
 
         input_form = Parsing_form(request.GET)
 
         if input_form.is_valid:
-            """ """
+            """Если форма валидна."""
          
             # Получаем адрес страницы из запроса.
             get_adress = request.GET['url']
@@ -123,7 +113,6 @@ class Parse(View):
 
                 funct = self.savedatabasejsone(result, teg)
                 
-
         return redirect('table')
 
     def savedatabasejsone(self, result, teg): 
@@ -154,6 +143,7 @@ class Parse(View):
         return "Все обьекты добавлены в базу данных успешно."
 
     def convert_date(self, i):
+        """Конвертируем дату."""
 
         b = i['create_date']
         q = b.split('.')
