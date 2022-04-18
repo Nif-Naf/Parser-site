@@ -29,12 +29,12 @@
       <section class="main">
         <div class="wrapper">
             <div class="titel_table">
-              <div class="url base_titel"><a href="{% url 'search_url' %}">URL</a></div>
+              <div class="url base_titel"><a href="{% url 'search_url' %}?page=1">URL</a></div>
               <div class="domen base_titel">Домен</div>
-              <div class="create base_titel"><a href="{% url 'search_create_data' %}">Дата создания</a></div>
-              <div class="update base_titel"><a href="{% url 'search_update_data' %}">Дата обновления</a></div>
-              <div class="country base_titel"><a href="{% url 'search_country' %}">Страна</a></div>
-              <div class="dead base_titel"><a href="{% url 'search_dead' %}">is Dead</a></div>
+              <div class="create base_titel"><a href="{% url 'search_create_data' %}?page=1">Дата создания</a></div>
+              <div class="update base_titel"><a href="{% url 'search_update_data' %}?page=1">Дата обновления</a></div>
+              <div class="country base_titel"><a href="{% url 'search_country' %}?page=1">Страна</a></div>
+              <div class="dead base_titel"><a href="{% url 'search_dead' %}?page=1">is Dead</a></div>
               <div class="A base_titel">A</div>
               <div class="NS base_titel">NS</div>
               <div class="CNAME base_titel">CNAME</div>
@@ -59,13 +59,24 @@
           </div>
         </div>
       </section>
+ 
+      {{ search_obj }}
 
       <nav class="list_pages">
         <ul>
           {% for page_now in paginator.page_range %}
           <li class="page_number">
+            
+            {% if request.path == "/result" %}
+              <a href="{% url 'table' %}?page={{ page_now }}">{{ page_now }},</a>
 
-            <a href="{% url 'table' %}?page={{ page_now }}">{{ page_now }},</a>
+            {% elif request.path == "/result/search by request" %}
+              <a href="{% url 'table' %}/search by request?search_object={{ search_obj }}?page={{ page_now }}">{{ page_now }},</a>
+
+            {% else %}
+              <a href="{% url 'table' %}/search by {{ part_url }}?page={{ page_now }}">{{ page_now }},</a>
+            {% endif %}
+
           </li>
           {% endfor %}
         </ul>

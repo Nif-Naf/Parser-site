@@ -45,6 +45,11 @@ class Show_sorting_table_for_request(Show_tablet):
             selection = self.request.GET.get("search_object")
             query = Result.objects.filter(url__icontains = selection)
             return query
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_obj'] = self.request.GET.get("search_object")
+        return context
 
 class Sorting_by_url(Show_tablet):
     """Сортируем по адресу."""
@@ -52,17 +57,32 @@ class Sorting_by_url(Show_tablet):
     def get_ordering(self):
         return self.request.GET.get('ordering', '-url')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['part_url'] = 'url'
+        return context
+
 class Sorting_by_dead(Show_tablet):
     """Сортируем по состоянию."""
 
     def get_ordering(self):
         return self.request.GET.get('ordering', '-is_dead')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['part_url'] = 'dead'
+        return context
 
 class Sorting_by_country(Show_tablet):
     """Сортируем обькты по странам."""
 
     def get_ordering(self):
         return self.request.GET.get('ordering', '-country')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['part_url'] = 'country'
+        return context
     
 class Sorting_by_create_data(Show_tablet):
     """Сортируем обьекты по дате создания."""
@@ -70,11 +90,21 @@ class Sorting_by_create_data(Show_tablet):
     def get_ordering(self):
         return self.request.GET.get('ordering', '-create_data')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['part_url'] = 'create_data'
+        return context
+
 class Sorting_by_update_data(Show_tablet):
     """Сортируем обьекты по дате обновления."""
 
     def get_ordering(self):
         return self.request.GET.get('ordering', '-update_data')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['part_url'] = 'update_data'
+        return context
 
 class Parse(View):
     """Парсер."""
