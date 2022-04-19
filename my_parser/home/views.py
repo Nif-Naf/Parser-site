@@ -159,7 +159,7 @@ class Parse(View):
                     """Если все успешно добавлено без исключений."""
                     continue
 
-                else:
+                elif funct == "Exeption":
                     """Если возникли каие-то проблемы останавливаем цикл поиска и записи."""
                     break
 
@@ -168,32 +168,38 @@ class Parse(View):
     def savedatabasejsone(self, result, teg): 
         """Преобразовываем и добавляем в БД."""
         
-        if result['message'] == True:
-            return True
+        try:
+            """Здесь обрабатываем возможное исключение."""
+            res = result['domains']
+
+        except KeyError:
+            """Если выброшенно исключени, возвращаемся обратно в цикл. Те просто пропускаем 'проблемную' ссылку."""
+            return 'Exeption'
         
-        res = result['domains']
+        else:
+            """Если не было исключения. То продолжаем добавлять информацию из API."""
 
-        for i in res:
-            """Цикл записи."""
+            for i in res:
+                """Цикл записи."""
 
-            convertait = self.convert_date(i)
-            i['create_date'] =  convertait[0]
-            i['update_date'] =  convertait[1]
+                convertait = self.convert_date(i)
+                i['create_date'] =  convertait[0]
+                i['update_date'] =  convertait[1]
 
-            newRecord = Result(
-                url = teg, 
-                domain = i['domain'],
-                create_data = i['create_date'],
-                update_data = i['update_date'],
-                country = i['country'],
-                is_dead = i['isDead'],
-                a = i['A'],
-                ns = i['NS'],
-                cname = i['CNAME'],
-                mx = i['MX'],
-                txt = i['TXT']
-                )
-        newRecord.save()
+                newRecord = Result(
+                    url = teg, 
+                    domain = i['domain'],
+                    create_data = i['create_date'],
+                    update_data = i['update_date'],
+                    country = i['country'],
+                    is_dead = i['isDead'],
+                    a = i['A'],
+                    ns = i['NS'],
+                    cname = i['CNAME'],
+                    mx = i['MX'],
+                    txt = i['TXT']
+                    )
+                newRecord.save()
         
         return True
 
