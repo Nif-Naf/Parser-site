@@ -60,8 +60,6 @@
         </div>
       </section>
  
-      {{ search_obj }}
-
       <nav class="list_pages">
         <ul>
           {% for page_now in paginator.page_range %}
@@ -71,7 +69,7 @@
               <a href="{% url 'table' %}?page={{ page_now }}">{{ page_now }},</a>
 
             {% elif request.path == "/result/search by request" %}
-              <a href="{% url 'table' %}/search by request?search_object={{ search_obj }}?page={{ page_now }}">{{ page_now }},</a>
+              <a href="{% url 'table' %}/search by request?search_object={{ search_obj }}&page={{ page_now }}">{{ page_now }},</a>
 
             {% else %}
               <a href="{% url 'table' %}/search by {{ part_url }}?page={{ page_now }}">{{ page_now }},</a>
