@@ -58,7 +58,7 @@ body {
 }
 
 .base_titel {
-    white-space: normal;
+    word-break: break-all;
 }
 
 .main > .wrapper > .find_object {
@@ -83,7 +83,7 @@ body {
 .list_pages > ul {
     list-style-type: none;
     margin: 0;
-    white-space: nowrap;
+    word-break: break-all;
 }
 
 .list_pages > ul > .page_number {
