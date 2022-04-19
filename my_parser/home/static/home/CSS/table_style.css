@@ -51,18 +51,29 @@ body {
 
 .main > .wrapper > .titel_table {
     display: grid;
-    grid-template-columns: repeat(11, 1fr);
+    /* grid-template-columns: 9vw 11vw 5vw 5vw 3vw 3vw 5vw 5vw 5vw 5vw 5vw; */
+    grid-template-columns: repeat(11, 7.3%);
     padding: 1em;
     text-align: center;
-    grid-gap: .5em;
+    grid-gap: 2em;
+}
+
+.base_titel {
+    white-space: normal;
 }
 
 .main > .wrapper > .find_object {
     display: grid;
-    grid-template-columns: repeat(11, 1fr);
-    grid-gap: .5em;
+    /* grid-template-columns:  9vw 11vw 5vw 5vw 3vw 3vw 5vw 5vw 5vw 5vw 5vw; */
+    grid-template-columns: repeat(11, 7.3%);
+    grid-gap: 2em;
     padding: 1em;
     text-align: center;
+}
+
+.base_obj {
+    word-break: break-all;
+    font-size: .8em;
 }
 
 .list_pages {
