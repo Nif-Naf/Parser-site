@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect
 
 import requests
-from bs4 import BeautifulSoup as BS
+from bs4 import BeautifulSoup as BeaSup
 
 from django.views.generic.list import ListView
 from django.views.generic import View
 
 from .forms import Parsing_form, Search_form
-from .models import Result, Search
+from .models import Result
+
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
 
 import datetime
 import json
@@ -131,46 +134,58 @@ class Parse(View):
             # Получаем адрес страницы из запроса.
             get_adress = request.GET['url']
             
-            #Переходим на запрошенную страницу.
-            addr = requests.get(get_adress)
+            valid_get_url = self.validator_url(get_adress)
 
-            #Создаем экземпляр класса
-            html = BS(addr.content, 'html.parser')
+            if valid_get_url == False:
+                """Ссылка не прошла тест."""
+                return redirect('home_form')
 
-            # Находим все теги а на странице
-            for link in html.find_all('a'):
-                """Цикл для асинхронного добавление информации из API."""
-                
-                #Получаем ссылку в теге а
-                teg = link.get('href')
-                
-                #Формируем адресс для передачи в АПИ
-                adress_api = ('https://api.domainsdb.info/v1/domains/search?domain=' + teg)
+            elif valid_get_url == True:
+                """Ссылка прошла тест."""
 
-                #Отправка ссылки в АПИ
-                addr_api = requests.get(adress_api) #<Response [200]> 
+                #Переходим на запрошенную страницу.
+                adres_html_page = requests.get(get_adress)
 
-                #Получаем информацию о ссылке через апи. В формате джейсон
-                result = addr_api.json() #Jsone файл
+                #Создаем экземпляр класса
+                html_page = BeaSup(adres_html_page.content, 'html.parser')
 
-                funct = self.savedatabasejsone(result, teg)
-                
-                if funct == True:
-                    """Если все успешно добавлено без исключений."""
-                    continue
+                # Находим все теги а на странице
+                for link in html_page.find_all('a'):
+                    """Цикл для асинхронного добавление информации из API."""
+                    
+                    #Получаем ссылку в теге а
+                    teg_a = link.get('href')
+                    
+                    #Формируем адресс для передачи в АПИ
+                    adres_api = ('https://api.domainsdb.info/v1/domains/search?domain=' + teg_a)
 
-                elif funct == "Exeption":
-                    """Если возникли каие-то проблемы останавливаем цикл поиска и записи."""
-                    break
+                    #Отправка ссылки в АПИ
+                    get_adres_api = requests.get(adres_api) #<Response [200]> 
+
+                    #Получаем информацию о ссылке через апи. В формате джейсон
+                    result = get_adres_api.json() #Jsone файл
+
+                    funct = self.savedatabasejsone(result, teg_a)
+                    
+                    if funct == True:
+                        """Если все успешно добавлено без исключений."""
+                        continue
+
+                    elif funct == "Exeption":
+                        """Если возникли каие-то проблемы останавливаем цикл поиска и записи."""
+                        break
+        else:
+            return redirect('home_form')
 
         return redirect('table')
 
-    def savedatabasejsone(self, result, teg): 
+    def savedatabasejsone(self, result, teg_a): 
         """Преобразовываем и добавляем в БД."""
         
         try:
             """Здесь обрабатываем возможное исключение."""
-            res = result['domains']
+            need_dir = result['domains']
+            
 
         except KeyError:
             """Если выброшенно исключени, возвращаемся обратно в цикл. Те просто пропускаем 'проблемную' ссылку."""
@@ -179,7 +194,7 @@ class Parse(View):
         else:
             """Если не было исключения. То продолжаем добавлять информацию из API."""
 
-            for i in res:
+            for i in need_dir:
                 """Цикл записи."""
 
                 convertait = self.convert_date(i)
@@ -187,7 +202,7 @@ class Parse(View):
                 i['update_date'] =  convertait[1]
 
                 newRecord = Result(
-                    url = teg, 
+                    url = teg_a, 
                     domain = i['domain'],
                     create_data = i['create_date'],
                     update_data = i['update_date'],
@@ -213,3 +228,19 @@ class Parse(View):
         z = datetime.datetime.strptime(y[0], "%Y-%m-%dT%H:%M:%S")
 
         return (w, z)
+
+    def validator_url(self, url):
+        """Проверяем ссылки на валидность."""
+
+        check_url = URLValidator()
+
+        try:
+            """Обработчик."""
+            check_url(url)
+
+        except ValidationError:
+            """Если ссылка не валидна."""
+            return False
+        else:
+            """В ином случае."""
+            return True

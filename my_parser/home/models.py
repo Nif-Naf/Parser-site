@@ -2,7 +2,7 @@ from django.db import models
 
 class External(models.Model):
     """Для передачи адреса парсеру."""
-    url = models.CharField('Адрес', max_length=100)
+    url = models.URLField('Адрес', max_length=100)
 
 class Search(models.Model):
     """Для формы поиска."""
@@ -10,7 +10,7 @@ class Search(models.Model):
 
 class Result(models.Model):
     """Модель """
-    url = models.CharField('Адрес', max_length=100)
+    url = models.URLField('Адрес', max_length=100)
     domain = models.CharField('Домен', max_length=100)
     create_data = models.DateTimeField('Дата создания')
     update_data = models.DateTimeField('Дата обновления')
