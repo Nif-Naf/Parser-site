@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup as BS
 from django.views.generic.list import ListView
 from django.views.generic import View
 
-from .forms import Parsing_form, Js_form, Search_form
+from .forms import Parsing_form, Search_form
 from .models import Result, Search
 
 import datetime
