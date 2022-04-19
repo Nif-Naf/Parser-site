@@ -8,10 +8,6 @@ urlpatterns = [
     #Рендерим главную страницу.
     path('', views.show, name="home_form"),
    
-    #Тестовые страницы.
-    path('test', views.test, name="test"),
-    path('test_two', views.test_two, name="test_two"),
-
     #Сам парсер.
     path('send', Parse.as_view(), name='result'),
 
