@@ -167,7 +167,10 @@ class Parse(View):
 
     def savedatabasejsone(self, result, teg): 
         """Преобразовываем и добавляем в БД."""
-
+        
+        if result['message'] == True:
+            return True
+        
         res = result['domains']
 
         for i in res:
