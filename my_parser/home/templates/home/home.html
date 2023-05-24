@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'home/CSS/home_style.css' %}">
+        <title>Форма</title>
+    </head>
+    <body>
+        <section class="main">
+            <div class="wrapper">
+    
+                <h1>Добро пожаловать в мое приложение.</h1>
+                <form action="{% url 'result' %}" method="GET" class="form">
+                    {{ form.url }}
+                    <button>Отправить</button>
+                </form>
+                
+                <h2><a href="{% url 'table' %}?page=1">Посмотреть таблицу</a></h2>
+            
+            </div>
+        </section>
+    </body>
+</html>
